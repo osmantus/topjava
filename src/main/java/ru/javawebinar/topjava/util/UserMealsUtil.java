@@ -76,10 +76,7 @@ public class UserMealsUtil {
                         {
                             LocalTime mealTime = eachMeal.getDateTime().toLocalTime();
                             if (mealTime.isAfter(startTime) && mealTime.isBefore(endTime))
-                            {
-                                if (eachMeal.getDateTime().toLocalDate().equals(date))
-                                    resultedList.add(new UserMealWithExceed(eachMeal.getDateTime(), eachMeal.getDescription(), eachMeal.getCalories(), true));
-                            }
+                                resultedList.add(new UserMealWithExceed(eachMeal.getDateTime(), eachMeal.getDescription(), eachMeal.getCalories(), true));
                         }
                     }
                 }
