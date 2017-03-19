@@ -54,8 +54,7 @@ public class UserMealsUtil {
         for (Map.Entry<LocalDate, List<UserMeal>> eachDate : mealsByDate.entrySet()) {
             LocalDate date = eachDate.getKey();
 
-            if (totalMealCaloriesByDate.containsKey(date))
-            {
+            if (totalMealCaloriesByDate.containsKey(date)) {
                 Integer totalCaloriesExeeded = totalMealCaloriesByDate.get(date);
                 if (totalCaloriesExeeded > caloriesPerDay) {
                     allFilteredMeals.addAll(eachDate.getValue());
