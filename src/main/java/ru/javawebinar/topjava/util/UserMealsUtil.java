@@ -30,39 +30,24 @@ public class UserMealsUtil {
 
     public static List<UserMealWithExceed> getFilteredWithExceeded(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
 
-        List<UserMealWithExceed> resultedList = new ArrayList<>();
         Map<LocalDate, Integer> totalMealCaloriesByDate = new HashMap<>();
-        Map<LocalDate, List<UserMeal>> mealsByDate = new HashMap<>();
-        List<UserMeal> userMeals = null;
-        List<UserMeal> allFilteredMeals = new ArrayList<>();
-
         for (UserMeal eachMeal : mealList) {
             LocalDate mealDate = eachMeal.getDateTime().toLocalDate();
-            LocalTime mealTime = eachMeal.getDateTime().toLocalTime();
 
             int currentTotalCalories = totalMealCaloriesByDate.getOrDefault(mealDate, 0);
-
             totalMealCaloriesByDate.put(mealDate, currentTotalCalories + eachMeal.getCalories());
+        }
+
+        List<UserMealWithExceed> resultedList = new ArrayList<>();
+        for (UserMeal eachMeal : mealList) {
+            LocalDateTime mealDate = eachMeal.getDateTime();
+            LocalTime mealTime = eachMeal.getDateTime().toLocalTime();
 
             if (TimeUtil.isBetween(mealTime, startTime, endTime)) {
-                userMeals = mealsByDate.getOrDefault(mealDate, new ArrayList<UserMeal>());
-                userMeals.add(eachMeal);
-                mealsByDate.put(mealDate, userMeals);
+                resultedList.add(new UserMealWithExceed(mealDate, eachMeal.getDescription(), eachMeal.getCalories(),
+                        totalMealCaloriesByDate.get(mealDate.toLocalDate()) > caloriesPerDay));
             }
         }
-
-        for (Map.Entry<LocalDate, List<UserMeal>> eachDate : mealsByDate.entrySet()) {
-            LocalDate date = eachDate.getKey();
-
-            if (totalMealCaloriesByDate.containsKey(date)) {
-                Integer totalCaloriesExeeded = totalMealCaloriesByDate.get(date);
-                if (totalCaloriesExeeded > caloriesPerDay) {
-                    allFilteredMeals.addAll(eachDate.getValue());
-                }
-            }
-        }
-
-        allFilteredMeals.forEach(item -> resultedList.add(new UserMealWithExceed(item.getDateTime(), item.getDescription(), item.getCalories(), true)));
 
         return resultedList;
     }
