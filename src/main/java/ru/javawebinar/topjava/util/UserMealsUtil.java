@@ -44,7 +44,7 @@ public class UserMealsUtil {
 
             totalMealCaloriesByDate.put(mealDate, currentTotalCalories + eachMeal.getCalories());
 
-            if (mealTime.isAfter(startTime) && mealTime.isBefore(endTime)) {
+            if (TimeUtil.isBetween(mealTime, startTime, endTime)) {
                 userMeals = mealsByDate.getOrDefault(mealDate, new ArrayList<UserMeal>());
                 userMeals.add(eachMeal);
                 mealsByDate.put(mealDate, userMeals);
