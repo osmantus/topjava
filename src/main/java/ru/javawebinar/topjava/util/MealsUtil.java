@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  */
 public class MealsUtil {
 
-    public static List<Meal> meals = new ArrayList<>();
+    public static List<Meal> MEALS = new ArrayList<>();
     public static List<MealWithExceed> mealsStaticList = new ArrayList<>();
 
     public static Integer DEFAULT_CALORIES_PER_DAY = 2000;
@@ -26,7 +26,7 @@ public class MealsUtil {
     public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
 
     static {
-        meals = Arrays.asList(
+        MEALS = Arrays.asList(
                 new Meal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500),
                 new Meal(LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000),
                 new Meal(LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500),
@@ -37,7 +37,7 @@ public class MealsUtil {
     }
 
     public static void main(String[] args) {
-        List<MealWithExceed> mealsWithExceeded = getFilteredWithExceeded(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
+        List<MealWithExceed> mealsWithExceeded = getFilteredWithExceeded(MEALS, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
         mealsWithExceeded.forEach(System.out::println);
     }
 
@@ -50,15 +50,15 @@ public class MealsUtil {
 
         return meals.stream()
                 .filter(meal -> DateTimeUtil.isBetween(meal.getTime(), startTime, endTime))
-                .map(meal -> new MealWithExceed(meal.getDateTime(), meal.getDescription(), meal.getCalories(),
+                .map(meal -> new MealWithExceed(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(),
                                 caloriesSumByDate.get(meal.getDate()) > caloriesPerDay))
                 .collect(Collectors.toList());
     }
 
     public static List<MealWithExceed> createMealsExceedStaticList()
     {
-        mealsStaticList = meals.stream()
-                .map(meal -> new MealWithExceed(meal.getDateTime(), meal.getDescription(), meal.getCalories(), false))
+        mealsStaticList = MEALS.stream()
+                .map(meal -> new MealWithExceed(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), false))
                 .collect(Collectors.toList());
 
         return mealsStaticList;
