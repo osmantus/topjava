@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
  * 11.01.2015.
  */
 public class MealWithExceed {
+
+    protected Integer id;
+
     private final LocalDateTime dateTime;
 
     private final String description;
@@ -22,6 +25,22 @@ public class MealWithExceed {
         this.exceed = exceed;
     }
 
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getCalories() {
+        return calories;
+    }
+
+    public boolean isExceed() {
+        return exceed;
+    }
+
     @Override
     public String toString() {
         return "UserMealWithExceed{" +
@@ -30,5 +49,9 @@ public class MealWithExceed {
                 ", calories=" + calories +
                 ", exceed=" + exceed +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
     }
 }
