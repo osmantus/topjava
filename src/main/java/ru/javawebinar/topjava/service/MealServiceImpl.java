@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.service;
 
+import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.Meal;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.javawebinar.topjava.repository.MealRepository;
@@ -10,10 +11,15 @@ import java.util.stream.Collectors;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 
+@Service
 public class MealServiceImpl implements MealService {
 
     @Autowired
     private MealRepository repository;
+
+    public MealRepository getRepository() {
+        return repository;
+    }
 
     @Override
     public Meal save(Integer userId, Meal meal) {
@@ -27,7 +33,7 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public Meal get(Integer userId, int id) throws NotFoundException {
-        return repository.get(id);
+        return checkNotFoundWithId(repository.get(id), id);
     }
 
     @Override
