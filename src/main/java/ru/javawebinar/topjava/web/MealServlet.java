@@ -18,7 +18,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 /**
- * Created by Alex on 10.04.2017.
+ * User: gkislin
+ * Date: 19.08.2014
  */
 public class MealServlet extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(MealServlet.class);
