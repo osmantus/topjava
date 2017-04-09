@@ -5,7 +5,8 @@ import ru.javawebinar.topjava.model.Meal;
 import java.util.Collection;
 
 /**
- * Created by Alex on 10.04.2017.
+ * GKislin
+ * 06.03.2015.
  */
 public interface MealRepository {
     Meal save(Meal meal);
