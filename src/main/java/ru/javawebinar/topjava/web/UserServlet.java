@@ -10,7 +10,8 @@ import java.io.IOException;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
- * Created by Alex on 10.04.2017.
+ * User: gkislin
+ * Date: 19.08.2014
  */
 public class UserServlet {
     private static final Logger LOG = getLogger(UserServlet.class);
