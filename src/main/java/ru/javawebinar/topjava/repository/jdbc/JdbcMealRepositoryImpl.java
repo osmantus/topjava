@@ -42,6 +42,7 @@ public class JdbcMealRepositoryImpl implements MealRepository {
     public Meal save(Meal meal, int userId) {
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", meal.getId())
+                .addValue("user_id", userId)
                 .addValue("datetime", meal.getDate())
                 .addValue("description", meal.getDescription())
                 .addValue("calories", meal.getCalories());
@@ -51,7 +52,7 @@ public class JdbcMealRepositoryImpl implements MealRepository {
             meal.setId(newKey.intValue());
         } else {
             namedParameterJdbcTemplate.update(
-                    "UPDATE meals SET datetime=:datetime, description=:description, calories=:calories WHERE id=:id", map);
+                    "UPDATE meals SET datetime=:datetime, description=:description, calories=:calories, user_id=:user_id WHERE id=:id", map);
         }
         return meal;
     }
@@ -63,17 +64,17 @@ public class JdbcMealRepositoryImpl implements MealRepository {
 
     @Override
     public Meal get(int id, int userId) {
-        List<Meal> meals = jdbcTemplate.query("SELECT * FROM meals WHERE id=?", ROW_MAPPER, id);
+        List<Meal> meals = jdbcTemplate.query("SELECT * FROM meals WHERE id=? And user_id=?", ROW_MAPPER, id, userId);
         return DataAccessUtils.singleResult(meals);
     }
 
     @Override
     public List<Meal> getAll(int userId) {
-        return jdbcTemplate.query("SELECT * FROM meals ORDER BY datetime, calories", ROW_MAPPER);
+        return jdbcTemplate.query("SELECT * FROM meals WHERE user_id=? ORDER BY datetime, calories", ROW_MAPPER, userId);
     }
 
     @Override
     public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
-        return jdbcTemplate.query("SELECT * FROM meals WHERE datetime BETWEEN ? AND ? ORDER BY datetime, calories", ROW_MAPPER, startDate, endDate);
+        return jdbcTemplate.query("SELECT * FROM meals WHERE datetime BETWEEN ? AND ? AND user_id=? ORDER BY datetime, calories", ROW_MAPPER, startDate, endDate, userId);
     }
 }

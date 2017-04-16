@@ -13,5 +13,5 @@ INSERT INTO user_roles (role, user_id) VALUES
   ('ROLE_USER', 100000),
   ('ROLE_ADMIN', 100001);
 
-INSERT INTO MEALS (description, datetime, calories)
-VALUES ('soup', DATE('01.04.2017'), 2000);
+INSERT INTO MEALS (description, datetime, calories, user_id)
+VALUES ('soup', DATE('01.04.2017'), 2000, 100000);
