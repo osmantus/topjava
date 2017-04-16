@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -13,6 +14,8 @@ import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.MealRepository;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,6 +23,12 @@ import java.util.List;
 public class JdbcMealRepositoryImpl implements MealRepository {
 
     private static final BeanPropertyRowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);
+    /*private static final RowMapper<Meal> ROW_MAPPER = new RowMapper<Meal>() {
+        @Override
+        public Meal mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new Meal(rs.getInt("id"), rs.getTimestamp("datetime").toLocalDateTime(), rs.getString("description"), rs.getInt("calories"));
+        }
+    };*/
 
     @Autowired
     private final JdbcTemplate jdbcTemplate;
@@ -52,7 +61,7 @@ public class JdbcMealRepositoryImpl implements MealRepository {
             meal.setId(newKey.intValue());
         } else {
             namedParameterJdbcTemplate.update(
-                    "UPDATE meals SET datetime=:datetime, description=:description, calories=:calories, user_id=:user_id WHERE id=:id", map);
+                    "UPDATE meals SET datetime=:datetime, description=:description, calories=:calories, user_id=:user_id WHERE id=:id AND user_id=:user_id", map);
         }
         return meal;
     }
