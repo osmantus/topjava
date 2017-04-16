@@ -6,7 +6,9 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 
@@ -37,7 +39,9 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public List<Meal> getAll(int userId) {
-        return repository.getAll(userId);
+        return repository.getAll(userId).stream()
+                .sorted(Comparator.nullsLast((m1, m2) -> m2.getDate().compareTo(m1.getDate())))
+                .collect(Collectors.toList());
     }
 
     @Override
