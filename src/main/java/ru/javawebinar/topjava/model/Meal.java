@@ -1,7 +1,6 @@
 package ru.javawebinar.topjava.model;
 
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -10,7 +9,20 @@ import java.time.LocalTime;
  * GKislin
  * 11.01.2015.
  */
+@NamedQueries({
+        @NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meals m WHERE m.user_id=:userId And m.id=:id"),
+        @NamedQuery(name = Meal.FIND_BETWEEN_DATES, query = "SELECT m FROM Meals m left join Users u on m.user_id = u.id WHERE u.id=:userId And m.date_time BETWEEN :startDate AND :endDate"),
+        @NamedQuery(name = Meal.ALL_SORTED, query = "SELECT m FROM Meals m WHERE m.user_id=:userId ORDER BY m.datetime, m.calories"),
+})
+@Entity
+@Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"}, name = "meals_unique_user_datetime_idx")})
 public class Meal extends BaseEntity {
+
+    public static final String DELETE = "User.delete";
+    public static final String ALL_SORTED = "User.getAllSorted";
+    public static final String FIND_BETWEEN_DATES = "User.findBetweenDates";
+
+    @Column(name = "date_time")
     private LocalDateTime dateTime;
 
     private String description;
