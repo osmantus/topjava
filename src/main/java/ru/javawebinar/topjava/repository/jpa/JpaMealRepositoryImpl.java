@@ -30,7 +30,7 @@ public class JpaMealRepositoryImpl implements MealRepository {
 
         User ref = em.getReference(User.class, userId);
         meal.setUser(ref);
-        
+
         if (meal.isNew()) {
             em.persist(meal);
             return meal;
@@ -43,7 +43,10 @@ public class JpaMealRepositoryImpl implements MealRepository {
     @Transactional
     public boolean delete(int id, int userId) {
 
-        return em.createNamedQuery(Meal.ALL_SORTED, Meal.class).setParameter("userId", userId).setParameter("id", id).executeUpdate() != 0;
+        return em.createNamedQuery(Meal.DELETE, Meal.class)
+                .setParameter("userId", userId)
+                .setParameter("id", id)
+                .executeUpdate() != 0;
 
         //return em.createNamedQuery(Meal.DELETE).setParameter("id", id).executeUpdate() != 0;
 
@@ -60,21 +63,35 @@ public class JpaMealRepositoryImpl implements MealRepository {
     @Override
     public Meal get(int id, int userId) {
 
-        List<Meal> mealList = em.createNamedQuery(Meal.ALL_SORTED, Meal.class).setParameter("userId", userId).getResultList();
+        /*List<Meal> mealList = em.createNamedQuery(Meal.ALL_SORTED, Meal.class)
+                .setParameter("userId", userId)
+                .getResultList();
 
-        return mealList.stream().filter(m -> m.getId() == id).collect(Collectors.toList()).get(0);
+        if (!mealList.isEmpty())
+            return mealList.stream().filter(m -> m.getId() == id).collect(Collectors.toList()).get(0);
+        else
+            return null;*/
+
+        Meal meal = em.find(Meal.class, id);
+        return (meal != null && meal.getUser().getId() == userId) ? meal : null;
     }
 
     @Override
     public List<Meal> getAll(int userId) {
-        return em.createNamedQuery(Meal.ALL_SORTED, Meal.class).setParameter("userId", userId).getResultList();
+        return em.createNamedQuery(Meal.ALL_SORTED, Meal.class)
+                .setParameter("userId", userId)
+                .getResultList();
     }
 
     @Override
     public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
         //return null;
 
-        List<Meal> mealList = em.createNamedQuery(Meal.FIND_BETWEEN_DATES, Meal.class).setParameter("userId", userId).setParameter("startDate", startDate).setParameter("endDate", endDate).getResultList();
+        List<Meal> mealList = em.createNamedQuery(Meal.FIND_BETWEEN_DATES, Meal.class)
+                .setParameter("userId", userId)
+                .setParameter("startDate", startDate)
+                .setParameter("endDate", endDate)
+                .getResultList();
 
         return mealList;
     }
