@@ -3,6 +3,7 @@ package ru.javawebinar.topjava.repository.jpa;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
@@ -23,16 +24,14 @@ public class JpaMealRepositoryImpl implements MealRepository {
     @Override
     @Transactional
     public Meal save(Meal meal, int userId) {
-        if (meal.getUser().getId() == userId) {
-            if (meal.isNew()) {
-                em.persist(meal);
-                return meal;
-            } else {
-                return em.merge(meal);
-            }
+        if (meal.isNew()) {
+            User ref = em.getReference(User.class, userId);
+            meal.setUser(ref);
+            em.persist(meal);
+            return meal;
+        } else {
+            return em.merge(meal);
         }
-        else
-            return null;
     }
 
     @Override
