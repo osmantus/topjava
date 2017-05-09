@@ -62,6 +62,6 @@ abstract public class AbstractServiceTest {
                 "---------------------------------\n");
     }
 
-    @Autowired
-    private MealService service;
+    /*@Autowired
+    private MealService service;*/
 }
