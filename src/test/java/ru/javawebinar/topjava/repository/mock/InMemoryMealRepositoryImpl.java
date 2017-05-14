@@ -78,3 +78,4 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
                 Stream.empty() : meals.values().stream().sorted(Comparator.comparing(Meal::getDateTime).reversed());
     }
 }
+
