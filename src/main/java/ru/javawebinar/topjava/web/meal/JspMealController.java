@@ -50,7 +50,7 @@ public class JspMealController extends MealRestController {
 
     @GetMapping("/create")
     public String createMeal(Model model) {
-        model.addAttribute("meal", new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000));
+        model.addAttribute("meal", new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), "", 1000));
         return "meal";
     }
 
