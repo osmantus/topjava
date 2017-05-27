@@ -9,6 +9,7 @@ import ru.javawebinar.topjava.web.json.JsonUtil;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @param <T> : Entity
  */
 public class ModelMatcher<T> {
-
     private Equality<T> equality;
     private Class<T> entityClass;
 
