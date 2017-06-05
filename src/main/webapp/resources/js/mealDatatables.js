@@ -1,4 +1,7 @@
-var ajaxUrl = 'ajax/admin/users/';
+/**
+ * Created by Alex on 05.06.2017.
+ */
+var ajaxUrl = 'ajax/profile/meals/';
 var datatableApi;
 
 function updateTable() {
@@ -10,6 +13,11 @@ function updateTable() {
     });
 }
 
+function clearFilter() {
+    $("#filter")[0].reset();
+    $.get(ajaxUrl, updateTableByData);
+}
+
 // $(document).ready(function () {
 $(function () {
     datatableApi = $('#datatable').DataTable({
@@ -17,19 +25,13 @@ $(function () {
         "info": true,
         "columns": [
             {
-                "data": "name"
+                "data": "dateTime"
             },
             {
-                "data": "email"
+                "data": "description"
             },
             {
-                "data": "roles"
-            },
-            {
-                "data": "enabled"
-            },
-            {
-                "data": "registered"
+                "data": "calories"
             },
             {
                 "defaultContent": "Edit",
